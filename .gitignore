@@ -1,0 +1,9 @@
+# Linux kernel build artifacts
+*.o
+*.ko
+*.mod
+*.mod.c
+*.cmd
+*.symvers
+modules.order
+.tmp_versions/
