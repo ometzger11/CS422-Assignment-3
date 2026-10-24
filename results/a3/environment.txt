@@ -1,0 +1,12 @@
+date_utc: 2026-10-24T04:23:30Z
+kernel: 7.0.0-38-generic
+arch: x86_64
+available_cc: reno cubic dart bbr
+allowed_cc: reno cubic dart bbr
+default_cc: cubic
+python: Python 3.14.4
+dart_module: FCCEEC0EB4834471791D5A8
+dart_stats_before: rounds=3413 few_samples=663 slow_start=21 ss_exit=4 grow=432 not_cwnd_limited=0 hold=2234 decrease=54 hold_rate_up=2 hold_no_rate=3 loss=72
+settings: n=10 duration=10 interval=0.2 reps=3 servers=listed_iperf3_servers.json max_attempts=30
+algos: cubic,reno,bbr,dart (interleaved; the first algorithm rotates by one each rep)
+dart_stats_after: rounds=5232 few_samples=813 slow_start=208 ss_exit=32 grow=936 not_cwnd_limited=69 hold=2400 decrease=451 hold_rate_up=201 hold_no_rate=122 loss=100

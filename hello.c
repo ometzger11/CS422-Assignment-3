@@ -21,5 +21,5 @@ module_init(hello_init);
 module_exit(hello_exit);
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Faisal");
-MODULE_DESCRIPTION("Minimal Hello World kernel module");
+MODULE_AUTHOR("Faisal, Owen, and Trevor");
+MODULE_DESCRIPTION("Our congestion control algo for CS 422 Assignment 3");

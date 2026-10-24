@@ -1,0 +1,10 @@
+date_utc: 2026-10-24T04:15:37Z
+kernel: 7.0.0-38-generic
+dart_module: FCCEEC0EB4834471791D5A8
+settings: duration=20 algos=dart,reno,cubic (run in this order per scenario)
+scenarios (name rate rtt_ms buffer_pkts loss):
+low_rtt     40mbit  10      500          0%
+high_rtt    40mbit  80      1000         0%
+queue       20mbit  20      1000         0%
+loss        40mbit  40      300          0.5%
+

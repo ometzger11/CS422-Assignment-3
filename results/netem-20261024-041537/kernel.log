@@ -1,0 +1,87 @@
+[46122.646026] faisal kernel: netem: version 1.3
+[46122.825762] faisal kernel: tcp_dart: 00000000f7e7416e ss_exit cwnd=316 base_rtt=10644us queue_delay=13578us
+[46122.921431] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=284 base_rtt=10644us queue_delay=39628us rate=3229 prev_rate=3301
+[46123.014907] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=255 base_rtt=10644us queue_delay=73522us rate=3378 prev_rate=3229
+[46123.102023] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=229 base_rtt=10644us queue_delay=66555us rate=3279 prev_rate=3378
+[46123.179062] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=206 base_rtt=10644us queue_delay=58078us rate=3315 prev_rate=3279
+[46123.248045] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=185 base_rtt=10644us queue_delay=51728us rate=3317 prev_rate=3315
+[46123.311073] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=166 base_rtt=10644us queue_delay=45373us rate=3270 prev_rate=3317
+[46123.367015] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=149 base_rtt=10644us queue_delay=39633us rate=3337 prev_rate=3270
+[46123.417017] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=134 base_rtt=10644us queue_delay=34478us rate=3302 prev_rate=3337
+[46123.462041] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=120 base_rtt=10644us queue_delay=29924us rate=3258 prev_rate=3302
+[46123.503062] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=108 base_rtt=10644us queue_delay=25679us rate=3302 prev_rate=3258
+[46136.557097] faisal kernel: dart_round_end: 7 callbacks suppressed
+[46136.557168] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=48 base_rtt=10644us queue_delay=5099us rate=3302 prev_rate=3303
+[46188.408476] faisal kernel: tcp_dart: 000000003523cc4e ss_exit cwnd=1280 base_rtt=80636us queue_delay=17460us
+[46188.793346] faisal kernel: tcp_dart: 000000003523cc4e decrease cwnd=1152 base_rtt=80636us queue_delay=114389us rate=3305 prev_rate=3266
+[46189.179023] faisal kernel: tcp_dart: 000000003523cc4e decrease cwnd=1036 base_rtt=80636us queue_delay=266661us rate=3318 prev_rate=3305
+[46189.528503] faisal kernel: tcp_dart: 000000003523cc4e decrease cwnd=932 base_rtt=80636us queue_delay=233065us rate=3299 prev_rate=3318
+[46189.841896] faisal kernel: tcp_dart: 000000003523cc4e decrease cwnd=838 base_rtt=80636us queue_delay=201572us rate=3305 prev_rate=3299
+[46190.124070] faisal kernel: tcp_dart: 000000003523cc4e decrease cwnd=754 base_rtt=80636us queue_delay=173110us rate=3302 prev_rate=3305
+[46190.378158] faisal kernel: tcp_dart: 000000003523cc4e decrease cwnd=678 base_rtt=80636us queue_delay=147669us rate=3298 prev_rate=3302
+[46190.606128] faisal kernel: tcp_dart: 000000003523cc4e decrease cwnd=610 base_rtt=80636us queue_delay=124659us rate=3306 prev_rate=3298
+[46190.811454] faisal kernel: tcp_dart: 000000003523cc4e decrease cwnd=549 base_rtt=80636us queue_delay=104068us rate=3302 prev_rate=3306
+[46190.996740] faisal kernel: tcp_dart: 000000003523cc4e decrease cwnd=494 base_rtt=80636us queue_delay=85592us rate=3291 prev_rate=3302
+[46191.162374] faisal kernel: tcp_dart: 000000003523cc4e decrease cwnd=444 base_rtt=80636us queue_delay=68948us rate=3314 prev_rate=3291
+[46252.894960] faisal kernel: tcp_dart: 00000000f7e7416e ss_exit cwnd=318 base_rtt=21233us queue_delay=28439us
+[46253.085683] faisal kernel: dart_round_end: 4 callbacks suppressed
+[46253.085721] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=286 base_rtt=21233us queue_delay=73862us rate=1666 prev_rate=1661
+[46253.277690] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=257 base_rtt=21233us queue_delay=151950us rate=1651 prev_rate=1666
+[46253.451068] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=231 base_rtt=21233us queue_delay=134384us rate=1651 prev_rate=1651
+[46253.606462] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=207 base_rtt=21233us queue_delay=118664us rate=1651 prev_rate=1651
+[46253.747035] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=186 base_rtt=21233us queue_delay=104119us rate=1644 prev_rate=1651
+[46253.872397] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=167 base_rtt=21233us queue_delay=90797us rate=1651 prev_rate=1644
+[46253.985054] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=150 base_rtt=21233us queue_delay=79900us rate=1660 prev_rate=1651
+[46254.085028] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=135 base_rtt=21233us queue_delay=69600us rate=1651 prev_rate=1660
+[46254.176090] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=121 base_rtt=21233us queue_delay=60521us rate=1651 prev_rate=1651
+[46254.257476] faisal kernel: tcp_dart: 00000000f7e7416e decrease cwnd=108 base_rtt=21233us queue_delay=52044us rate=1651 prev_rate=1651
+[46319.485367] faisal kernel: tcp_dart: 00000000bdf2467d ss_exit cwnd=635 base_rtt=40644us queue_delay=7488us
+[46319.675850] faisal kernel: dart_round_end: 10 callbacks suppressed
+[46319.675922] faisal kernel: tcp_dart: 00000000bdf2467d decrease cwnd=571 base_rtt=40644us queue_delay=56281us rate=3307 prev_rate=3250
+[46319.739141] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=571 ssthresh=399
+[46319.926215] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=399 ssthresh=279
+[46320.160015] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=279 ssthresh=195
+[46320.361053] faisal kernel: tcp_dart: 00000000bdf2467d decrease cwnd=175 base_rtt=40644us queue_delay=17489us rate=3301 prev_rate=3302
+[46320.388904] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=175 ssthresh=122
+[46320.607952] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=128 ssthresh=89
+[46320.726011] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=89 ssthresh=62
+[46320.986666] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=72 ssthresh=50
+[46321.235131] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=58 ssthresh=40
+[46321.442312] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=48 ssthresh=33
+[46321.524194] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=33 ssthresh=23
+[46325.183490] faisal kernel: dart_ssthresh: 8 callbacks suppressed
+[46325.183578] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=52 ssthresh=36
+[46325.298170] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=38 ssthresh=26
+[46325.375618] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=26 ssthresh=18
+[46325.662733] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=28 ssthresh=19
+[46326.405578] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=53 ssthresh=37
+[46326.560904] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=41 ssthresh=28
+[46326.647169] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=28 ssthresh=19
+[46327.581977] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=61 ssthresh=42
+[46327.677549] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=44 ssthresh=30
+[46327.874470] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=36 ssthresh=25
+[46330.398239] faisal kernel: dart_ssthresh: 3 callbacks suppressed
+[46330.398313] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=73 ssthresh=51
+[46330.488656] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=53 ssthresh=37
+[46330.884999] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=53 ssthresh=37
+[46331.090134] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=43 ssthresh=30
+[46331.305475] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=38 ssthresh=26
+[46331.501570] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=32 ssthresh=22
+[46331.551528] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=22 ssthresh=15
+[46331.664012] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=17 ssthresh=11
+[46332.768979] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=63 ssthresh=44
+[46333.010854] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=52 ssthresh=36
+[46335.683592] faisal kernel: dart_ssthresh: 4 callbacks suppressed
+[46335.683648] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=67 ssthresh=46
+[46335.823674] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=50 ssthresh=35
+[46336.206965] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=51 ssthresh=35
+[46336.255643] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=35 ssthresh=24
+[46336.954337] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=56 ssthresh=39
+[46337.159080] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=45 ssthresh=31
+[46337.282484] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=33 ssthresh=23
+[46337.480058] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=29 ssthresh=20
+[46338.185611] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=52 ssthresh=36
+[46338.288033] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=38 ssthresh=26
+[46340.926617] faisal kernel: dart_ssthresh: 7 callbacks suppressed
+[46340.926708] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=49 ssthresh=34
+[46341.051938] faisal kernel: tcp_dart: 00000000bdf2467d loss cwnd=38 ssthresh=26

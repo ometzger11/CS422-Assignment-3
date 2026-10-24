@@ -7,3 +7,10 @@
 *.symvers
 modules.order
 .tmp_versions/
+
+# Userspace simulation binary (make sim)
+tests/dart_sim
+
+# Python
+__pycache__/
+.venv/

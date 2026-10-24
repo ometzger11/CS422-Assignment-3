@@ -1,0 +1,44 @@
+scenario   algo    Mbit/s    srtt   queue   q p95   cwnd min/med/max   retx  DART decisions
+low_rtt    dart     38.21    14.9    4.85    6.09          48/50/316      0  ss_exit=1 grow=2 hold=1308 decrease=18
+low_rtt    reno     38.21  657.04   647.0  725.37      100/5137/5137      0  
+low_rtt    cubic    38.22   326.4  316.35  513.49       59/1087/1892      0  
+high_rtt   dart     37.53   87.64     7.6  233.48        10/290/1280      0  ss_exit=1 hold=188 decrease=14
+high_rtt   reno     37.53  654.68  574.63  655.34       10/5134/5134      0  
+high_rtt   cubic    37.53  523.26  443.22  602.94       10/1875/2488      0  
+queue      dart     19.09   26.05    5.98   92.56          34/43/318      0  ss_exit=1 grow=4 hold=738 decrease=20
+queue      reno     19.09 1248.22 1228.16 1426.78       34/4970/4970      0  
+queue      cubic    19.09  508.79  488.72  1020.5        32/883/2034      0  
+loss       dart     13.41   41.28    1.28   19.03          11/44/635    141  ss_exit=1 grow=421 decrease=2 hold_no_rate=2 loss=64
+loss       reno      6.78    41.1     1.1    4.79           3/22/646     83  
+loss       cubic     5.99   41.52    1.52    4.93           4/20/191     79  
+
+Checks
+  [PASS] low_rtt/dart: right algorithm, all bytes delivered
+  [PASS] low_rtt/reno: right algorithm, all bytes delivered
+  [PASS] low_rtt/cubic: right algorithm, all bytes delivered
+  [PASS] high_rtt/dart: right algorithm, all bytes delivered
+  [PASS] high_rtt/reno: right algorithm, all bytes delivered
+  [PASS] high_rtt/cubic: right algorithm, all bytes delivered
+  [PASS] queue/dart: right algorithm, all bytes delivered
+  [PASS] queue/reno: right algorithm, all bytes delivered
+  [PASS] queue/cubic: right algorithm, all bytes delivered
+  [PASS] loss/dart: right algorithm, all bytes delivered
+  [PASS] loss/reno: right algorithm, all bytes delivered
+  [PASS] loss/cubic: right algorithm, all bytes delivered
+  [PASS] low_rtt/dart: DART evaluated rounds
+  [PASS] low_rtt/dart: not stuck at the minimum cwnd: median cwnd over the last quarter = 48
+  [PASS] high_rtt/dart: DART evaluated rounds
+  [PASS] high_rtt/dart: not stuck at the minimum cwnd: median cwnd over the last quarter = 290
+  [PASS] queue/dart: DART evaluated rounds
+  [PASS] queue/dart: not stuck at the minimum cwnd: median cwnd over the last quarter = 43
+  [PASS] loss/dart: DART evaluated rounds
+  [PASS] loss/dart: not stuck at the minimum cwnd: median cwnd over the last quarter = 40
+  [PASS] loss/dart: ssthresh() called on loss: 64 times
+  [PASS] queue/dart: reacted to queueing delay: ss_exit=1 decrease=20
+  [PASS] queue/dart: lower median queueing delay than reno/cubic: 5.98 ms vs 488.72 ms
+  [PASS] every logged loss: ssthresh = max(2, floor(0.7 * cwnd)): 42 logged
+RESULT: PASS
+
+Kernel health
+  [PASS] no WARNING/BUG/Oops in the kernel log
+  tainted before=12288 after=12288
