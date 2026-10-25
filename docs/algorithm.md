@@ -243,6 +243,34 @@ simulator, a +25 ms delay pulse from 10 to 15 s pulled cwnd from 80 down to
 2–4 segments for the length of the pulse, and cwnd was back at 79 one second
 after the pulse ended. A longer RTT that persists would keep it low.
 
+**Delay that appears only at low sending rates (seen in the A3 internet
+runs).** On the lab VM's internet path, RTT is inflated while the sender is
+slow. In 15 of 30 DART runs (`results/a3`), sRTT in the first second was
+27–144 ms (median about 80 ms) above the base RTT while cwnd was still
+small. That is far above HIGH (at most 20 ms), so DART left slow start
+early; the largest cwnd in these runs was 20–320 segments. Rule C then kept
+cutting, because the rate did not improve. Those runs averaged under
+5 Mbit/s for the whole 10 s test. The other 15 DART runs averaged
+55.5 Mbit/s; on the same destination, that is a median of 0.85× Reno's mean
+(range 0.18–1.54×).
+
+The extra delay is not DART's own queue:
+- 80 ms of queue at 40–100 Mbit/s is 280–690 full-size segments. A flight of
+  20–60 segments cannot build it.
+- On 185.76.9.135, Reno's first RTT samples were also about 200 ms (base
+  RTT 109 ms), and they dropped to the base RTT once its flights were large.
+- Idle pings, with no TCP flow at all, show the same jitter. It starts at
+  the first ISP hop past the LAN router
+  (`results/a3/report/path_rtt_probe.txt`).
+
+CUBIC's HyStart is also delay-based, and it stalled in 8 of 30 runs; Reno
+stalled in none. The exact cause on the access link is not known.
+
+Candidate fixes (none are implemented):
+- ignore delay until the flight is large, for example 64 segments or more;
+- use the minimum RTT over several rounds;
+- require the delay to persist for a few rounds before leaving slow start.
+
 **Competing with loss-based flows.** Reno and CUBIC fill the buffer. DART
 sees high delay and backs off, so like Vegas it gets less than its fair
 share against them. Rule C only holds while DART's own rate keeps

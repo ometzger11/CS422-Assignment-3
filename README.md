@@ -8,9 +8,10 @@ and backs off by 10% when the queue is high and throughput has stopped
 improving. On loss, ssthresh becomes 70% of cwnd, and the Linux core runs
 the usual recovery. See [docs/algorithm.md](docs/algorithm.md).
 
-Built and tested on Ubuntu 26.04 with kernel `7.0.0-38-generic` (x86_64, KVM
-guest). [docs/verification.md](docs/verification.md) lists what has been
-verified and what still needs root to run.
+Built and tested on Ubuntu 26.04.1 with kernel `7.0.0-38-generic` (x86_64, KVM
+guest); see [Tested environment](#tested-environment) and
+[Required kernel features](#required-kernel-features).
+[docs/verification.md](docs/verification.md) lists what has been verified.
 
 ## Layout
 
@@ -24,6 +25,8 @@ scripts/dart_module.sh  load / unload / status
 scripts/dart_flow.py    loopback self-test (Tests A, B); sender/receiver for Test C
 scripts/netem_test.sh   Test C: emulated bottleneck with network namespaces + netem
 client/                 the A2 iperf3 client, runner and plots, with dart added
+client/report_plots.py  report figures and tables (see Report figures)
+results/a3/             the A3 experiment: raw CSVs, plots/ (every server), report/
 docs/algorithm.md       how DART works, and its known limitations
 docs/verification.md    tests run, results, open items
 docs/csv-format.md      runs.csv / samples.csv columns
@@ -38,6 +41,44 @@ repository and results are unchanged. To see exactly what changed for A3:
 - Headers for the running kernel (`linux-headers-$(uname -r)`), `gcc`, `make`.
 - Python 3. For plots: `sudo apt install python3-matplotlib` (pulls in numpy).
 - For Test C: `ip`, `tc` (iproute2) and `ethtool`.
+
+## Tested environment
+
+| | |
+|---|---|
+| OS | Ubuntu 26.04.1 LTS, x86_64, KVM/QEMU guest behind libvirt NAT |
+| Kernel | `7.0.0-38-generic` (`#38-Ubuntu SMP PREEMPT_DYNAMIC Fri Sep  4 09:10:14 UTC 2026`) |
+| Headers | `linux-headers-7.0.0-38-generic` |
+| Compiler | gcc 15.2.0 (`Ubuntu 15.2.0-16ubuntu1`), the same version that built the kernel |
+| Python | 3.14.4; matplotlib 3.10.7 and numpy 2.3.5 from `python3-matplotlib` |
+| Module | `tcp_dart.ko` srcversion `FCCEEC0EB4834471791D5A8`, the build used for every result in `results/` |
+
+## Required kernel features
+
+| Feature | Why | On the tested kernel |
+|---|---|---|
+| `CONFIG_MODULES`, `CONFIG_MODULE_UNLOAD` | load and unload `tcp_dart.ko` | `y`, `y` |
+| `CONFIG_TCP_CONG_ADVANCED` | pluggable congestion control (`tcp_register_congestion_control`) | `y` |
+| `CONFIG_TCP_CONG_CUBIC`, `CONFIG_TCP_CONG_BBR` | the CUBIC and BBR baselines | `y`, `m` (`dart_module.sh load` runs `modprobe tcp_bbr`) |
+| `CONFIG_NET_NS`, `CONFIG_VETH`, `CONFIG_NET_SCH_NETEM` | Test C only (`netem_test.sh`) | `y`, `m`, `m` |
+| Unsigned modules allowed | `tcp_dart.ko` is not signed | `CONFIG_MODULE_SIG=y` but `CONFIG_MODULE_SIG_FORCE` unset; lockdown `none` (no Secure Boot) |
+| Kernel headers for the running kernel | out-of-tree build (`make -C /lib/modules/$(uname -r)/build`) | installed |
+
+Check a machine with
+`grep -E 'CONFIG_(MODULES|MODULE_UNLOAD|TCP_CONG_ADVANCED|TCP_CONG_BBR|MODULE_SIG_FORCE)=' /boot/config-$(uname -r)`
+and `cat /sys/kernel/security/lockdown`.
+
+- **Secure Boot.** Loading the unsigned module taints the kernel (`O` out-of-tree
+  plus `E` unsigned, 12288 in `/proc/sys/kernel/tainted`), which is harmless. With
+  Secure Boot on, lockdown refuses unsigned modules: either sign the module with an
+  enrolled MOK key (`kmodsign sha512 MOK.priv MOK.der tcp_dart.ko`) or turn Secure
+  Boot off in the VM.
+- **Kernel version.** The newest kernel API DART uses is the
+  `tcp_snd_cwnd()`/`tcp_snd_cwnd_set()` pair, added in Linux 5.18. Older kernels
+  will not build it. Only `7.0.0-38-generic` has been tested; `make` builds for the
+  running kernel, and `vermagic` must match it.
+- **BTF.** Kbuild skips BTF generation for the module because `pahole` is not
+  installed. DART doesn't use BTF, so this changes nothing.
 
 **Root is needed only for** loading and unloading the module and for Test C.
 Do both only inside the lab VM, and take a VM snapshot first: a bug in a
@@ -120,6 +161,23 @@ and the first algorithm rotates every repetition, so no algorithm always runs
 first or last. `runs.csv` rows are in execution order. `environment.txt`
 records the kernel, the DART module version, and DART's counters before and
 after the batch.
+
+## Report figures
+
+The report's figures and tables come from the committed `results/a3` data
+(10 destinations × 3 repetitions × 4 algorithms) and need no root:
+
+```sh
+cd client
+python3 plots.py --runs ../results/a3/runs.csv --samples ../results/a3/samples.csv \
+    --out ../results/a3/plots                      # every server, plus summary tables
+python3 report_plots.py --runs ../results/a3/runs.csv --samples ../results/a3/samples.csv \
+    --env ../results/a3/environment.txt --rep-server 185.76.9.135:5201 \
+    --out ../results/a3/report                     # report figures (.pdf + .png) and tables
+```
+
+[results/a3/report/README.md](results/a3/report/README.md) lists every figure and
+table, the function that draws it, and a draft caption.
 
 ## Watching DART
 

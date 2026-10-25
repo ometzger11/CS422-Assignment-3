@@ -3,11 +3,12 @@
 Environment: Ubuntu 26.04.1, kernel `7.0.0-38-generic` (x86_64, KVM/QEMU
 guest), gcc 15.2.0, Python 3.14.4. Checks were run on 2026-10-24.
 
-**Status in one line:** the module builds cleanly and its logic passes every
-unit and simulation check. Loading it into the kernel (Tests A–D with the
-real module) has **not been run yet**, because it needs root and `sudo`
-requires a password this session could not supply. The commands to finish
-are at the end.
+**Status in one line:** the module builds cleanly, its logic passes every
+unit and simulation check, and the real module (srcversion
+`FCCEEC0EB4834471791D5A8`) has been loaded and run: Test C (netem) passed
+and Test D (the A3 experiment) completed on 2026-10-24. Sections 1–3 were
+written before the module was loaded; section 4 records the real-kernel
+runs.
 
 ## 1. Build and static checks: PASS
 
@@ -98,34 +99,40 @@ matplotlib and numpy are not installed on this VM. The plot checks used
 PyPI wheels (hash-verified) unpacked into a scratch directory on
 `PYTHONPATH`; nothing was installed system-wide.
 
-## 4. Not run yet (needs root)
+## 4. Real-kernel runs (2026-10-24): PASS
 
-| Acceptance item | Status |
-|---|---|
-| `make` builds `tcp_dart.ko` for the running kernel | **done** |
-| module registers; `dart` in available list | **pending**: `sudo scripts/dart_module.sh load` |
-| a Python data socket selects `dart`; Linux reports `dart` | **pending**: `python3 scripts/dart_flow.py selftest` after loading. The same code passes with reno/cubic. |
-| a transfer completes correctly with dart, no kernel warnings | **pending**: same selftest |
-| RTT measurements collected | logic verified in sim; real kernel **pending** (selftest checks the DART counters move) |
-| congestion avoidance uses the documented thresholds | verified in sim and unit tests |
-| throughput feedback really affects decisions | verified (Rule C tests: plateau → cut, improving → hold, unknown → hold) |
-| 0.7 loss response | verified in sim; real kernel **pending** (`netem_test.sh` checks the debug log against ⌊0.7·cwnd⌋) |
-| safe with missing samples, recovery, startup | verified in unit tests and sim |
-| A2 client can include `dart` | **done** (default list `cubic,reno,bbr,dart`) |
-| experiments and plots runnable | pipeline verified with cubic/reno; the 4-algorithm run is **pending** |
-| README and algorithm docs match the code | done; parameters and rules taken from `tcp_dart.c` |
+The module was loaded with `sudo scripts/dart_module.sh load`. Every
+`environment.txt` under `results/` records `available_cc: reno cubic dart bbr`
+and module srcversion `FCCEEC0EB4834471791D5A8`, the same as the built
+`tcp_dart.ko` (`modinfo -F srcversion tcp_dart.ko`).
 
-## 5. To finish verification (in the lab VM, after a snapshot)
+| Acceptance item | Status | Evidence |
+|---|---|---|
+| `make` builds `tcp_dart.ko` for the running kernel | **done** | section 1; srcversion matches the loaded module |
+| module registers; `dart` in available list | **done** | `results/*/environment.txt` |
+| a Python data socket selects `dart`; Linux reports `dart` | **done** | `results/a3/runs.csv`: `algo_actual` = `algo_requested` in all 131 ok runs (33 of them dart) |
+| a transfer completes correctly with dart, no kernel warnings | **done** | `results/netem-20261024-041537/report.txt`: all bytes delivered in every scenario; no WARNING/BUG/Oops in the kernel log |
+| RTT measurements collected, rounds evaluated | **done** | netem checks "DART evaluated rounds"; A3 batch: 1819 rounds (`results/a3/report/table_dart_decisions.md`) |
+| reacts to queueing delay | **done** | netem `queue` scenario: median queueing delay 5.98 ms vs 1228 ms (reno) and 489 ms (cubic), same 19.09 Mbit/s |
+| 0.7 loss response | **done** | netem: all 42 logged losses have ssthresh = max(2, floor(0.7 × cwnd)) |
+| experiments and plots | **done** | `results/a3`: 10 destinations × 3 reps × 4 algorithms (120 runs used); `results/a3/plots`, `results/a3/report` |
+| Tests A + B (`dart_flow.py selftest`) with the module loaded | **output not saved** | re-run at the demo (section 5) |
+
+The A3 internet runs also showed a behaviour the simulator could not:
+non-congestive RTT inflation at low sending rates on this VM's access link,
+which makes DART (and CUBIC's HyStart) stall in some runs. See
+[algorithm.md](algorithm.md#known-behaviour-and-limitations) and
+`results/a3/report/README.md`.
+
+## 5. Demo checklist (in the lab VM, after a snapshot)
 
 ```sh
 cd ~/cs422/kernel-module
 make && make sim                                   # expect "168 checks, 0 failed"
 sudo scripts/dart_module.sh load                   # [root] insmod + allow dart, bbr
+scripts/dart_module.sh status                      # loaded, allowed, counters
 python3 scripts/dart_flow.py selftest              # Tests A + B, expect RESULT: PASS
-sudo scripts/netem_test.sh                         # [root] Test C, about 5 min
-sudo apt install python3-matplotlib                # [root] once, for plots
-cd client && ./run_all.sh -n 1 --reps 1 --out ../results/smoke    # Test D smoke
-./run_all.sh -n 10 --reps 3 --out ../results/a3                   # Test D full
+cd client && ./run_all.sh -n 1 --reps 1 --out /tmp/demo   # 4 x 10 s live tests (optional)
 ```
 
 ## 6. Finding to decide on: slow-start overshoot

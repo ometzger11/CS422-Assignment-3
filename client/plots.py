@@ -43,6 +43,8 @@ ALGO_STYLE = {
 ALGO_ORDER = ["cubic", "reno", "bbr", "dart"]
 OTHER_STYLE = {"color": "#6b6a66", "marker": "X"}
 
+PNG_DPI = 200  # raster copies for documents that can't embed PDF
+
 SAMPLE_FLOAT_COLS = ["t_s", "goodput_mbps", "cwnd_segs", "srtt_ms", "rttvar_ms",
                      "min_rtt_ms", "total_retrans", "retrans_delta",
                      "pacing_rate_mbps", "bytes_acked"]
@@ -131,9 +133,10 @@ def by_server(runs):
     return dict(sorted(groups.items()))
 
 
-def plot_timeseries(server, server_runs, out_dir):
+def plot_timeseries(server, server_runs, out_dir, png=False):
     """One page per repetition, four stacked panels sharing the time axis.
-    All pages for a server share y-limits so reps are directly comparable."""
+    All pages for a server share y-limits so reps are directly comparable.
+    png=True also writes each page as timeseries_<server>_rep<N>.png."""
     panels = [
         ("goodput_mbps", "Goodput (Mbit/s)"),
         ("cwnd_segs", "cwnd (segments)"),
@@ -184,14 +187,18 @@ def plot_timeseries(server, server_runs, out_dir):
             fig.suptitle(f"{server} — repetition {rep + 1}", y=0.995)
             fig.tight_layout(rect=(0, 0, 1, 0.95))
             pdf.savefig(fig)
+            if png:
+                fig.savefig(path[:-len(".pdf")] + f"_rep{rep + 1}.png", dpi=PNG_DPI)
             plt.close(fig)
     return path
 
 
-def plot_scatter(server, server_runs, out_dir):
+def plot_scatter(server, server_runs, out_dir, goodput_max=None, png=False):
     """cwnd / RTT / retransmits vs goodput, every sample from every rep.
     One row per algorithm with shared axes: four overlaid point clouds are
-    too close in color to tell apart, so each algorithm gets its own row."""
+    too close in color to tell apart, so each algorithm gets its own row.
+    goodput_max fixes the goodput axis (to match another figure);
+    png=True also writes a .png next to the .pdf."""
     xs = [
         ("cwnd_segs", "cwnd (segments)"),
         ("srtt_ms", "Smoothed RTT (ms)"),
@@ -211,19 +218,25 @@ def plot_scatter(server, server_runs, out_dir):
             if col == "retrans_delta":
                 # Mostly zeros plus rare bursts: symlog shows both
                 ax.set_xscale("symlog", linthresh=1)
-            elif col != "srtt_ms":  # RTT never reaches 0; let it zoom to the data
-                ax.set_xlim(left=0)
             if row == len(algos) - 1:
                 ax.set_xlabel(xlabel)
         axes[row][0].set_ylabel(f"{algo}\nGoodput (Mbit/s)")
+    # Set shared x-limits once, from every row's data: a set_xlim(left=0) per
+    # row would freeze the right limit before the later rows are drawn
+    for j, (col, _) in enumerate(xs):
+        if col not in ("srtt_ms", "retrans_delta"):  # RTT never reaches 0; let it zoom
+            xmax = np.nanmax(np.concatenate([r["samples"][col] for r in server_runs]))
+            axes[0][j].set_xlim(0, xmax * 1.05 if xmax > 0 else 1)
     # Shared retransmit axis: keep a readable range even with no retransmits
     retrans_ax = axes[0][[c for c, _ in xs].index("retrans_delta")]
     retrans_ax.set_xlim(-0.5, max(10, retrans_ax.get_xlim()[1]))
-    axes[0][0].set_ylim(bottom=0)
+    axes[0][0].set_ylim(0, goodput_max)
     fig.suptitle(f"{server} — per-sample metrics vs goodput (all repetitions)")
     fig.tight_layout()
     path = os.path.join(out_dir, f"scatter_{safe_name(server)}.pdf")
     fig.savefig(path)
+    if png:
+        fig.savefig(path[:-len(".pdf")] + ".png", dpi=PNG_DPI)
     plt.close(fig)
     return path
 

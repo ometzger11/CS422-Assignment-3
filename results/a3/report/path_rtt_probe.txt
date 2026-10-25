@@ -1,0 +1,53 @@
+# Idle path RTT probe (no TCP test running). Taken 2026-10-24T23:10:31Z, after the A3 batch
+# (2026-10-24 04:23-04:54Z), from the same VM. ICMP echo, 20 probes, 0.2 s apart.
+# Hops: 192.168.122.1 libvirt NAT, 192.168.8.1 LAN router, 100.69.2.1 ISP (CGNAT), 216.171.31.33 ISP
+
+$ ping -c 20 -i 0.2 -W 2 192.168.122.1
+--- 192.168.122.1 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3948ms
+rtt min/avg/max/mdev = 0.041/0.063/0.238/0.041 ms
+
+$ ping -c 20 -i 0.2 -W 2 192.168.8.1
+--- 192.168.8.1 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3813ms
+rtt min/avg/max/mdev = 1.152/1.750/4.535/0.891 ms
+
+$ ping -c 20 -i 0.2 -W 2 100.69.2.1
+--- 100.69.2.1 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3814ms
+rtt min/avg/max/mdev = 1.817/54.893/202.115/54.270 ms
+
+$ ping -c 20 -i 0.2 -W 2 216.171.31.33
+--- 216.171.31.33 ping statistics ---
+20 packets transmitted, 20 received, +2 duplicates, 0% packet loss, time 3812ms
+rtt min/avg/max/mdev = 2.185/20.969/103.907/32.383 ms
+
+$ ping -c 20 -i 0.2 -W 2 1.1.1.1
+--- 1.1.1.1 ping statistics ---
+20 packets transmitted, 20 received, +1 duplicates, 0% packet loss, time 3812ms
+rtt min/avg/max/mdev = 8.133/9.316/22.602/3.005 ms
+
+$ ping -c 20 -i 0.2 -W 2 185.76.9.135
+--- 185.76.9.135 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3813ms
+rtt min/avg/max/mdev = 109.660/151.888/208.356/29.033 ms, pipe 2
+
+$ ping -c 20 -i 0.2 -W 2 speedtest.sea11.us.leaseweb.net
+--- speedtest.sea11.us.leaseweb.net ping statistics ---
+20 packets transmitted, 20 received, +8 duplicates, 0% packet loss, time 3809ms
+rtt min/avg/max/mdev = 58.785/115.438/189.935/29.556 ms
+
+$ ping -c 20 -i 0.2 -W 2 a209.speedtest.wobcom.de
+--- a209.speedtest.wobcom.de ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 3824ms
+rtt min/avg/max/mdev = 118.164/156.967/208.983/36.977 ms, pipe 2
+
+$ tracepath -n -m 4 185.76.9.135
+ 1?: [LOCALHOST]                      pmtu 1500
+ 1:  192.168.122.1                                         0.066ms 
+ 1:  192.168.122.1                                         0.031ms 
+ 2:  192.168.8.1                                          31.763ms 
+ 3:  100.69.2.1                                            6.649ms 
+ 4:  216.171.31.33                                         3.983ms 
+     Too many hops: pmtu 1500
+     Resume: pmtu 1500 
